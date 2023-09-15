@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Outlet;
 use App\Models\User;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
 {
@@ -55,13 +56,22 @@ class UserController extends Controller
     }
 
     public function update(Request $request, $id){
-        User::where('id',$id)->update([
-            'nama' => $request->nama,
-            'username' => $request->username,
-            'idoutlet' => $request->idoutlet,
-            'role' => $request->role,
-            'password' => bcrypt($request->password),
-        ]);   
+        if(isset($request->password)){
+            User::where('id',$id)->update([
+                'nama' => $request->nama,
+                'username' => $request->username,
+                'idoutlet' => $request->idoutlet,
+                'role' => $request->role,
+                'password' => bcrypt($request->password),
+            ]);   
+        }else{
+            User::where('id',$id)->update([
+                'nama' => $request->nama,
+                'username' => $request->username,
+                'idoutlet' => $request->idoutlet,
+                'role' => $request->role,
+            ]);   
+        }
 
         return redirect('laundry/user');
     }
@@ -72,7 +82,8 @@ class UserController extends Controller
         $jumlah = $role->count();
 
         if ($jumlah == 1){
-            session()->flash('pesan', 'Data hanya ada satu!');
+            Alert::warning('Gagal', 'Data Hanya Satu');
+
         }else{
             User::where('id',$id)->delete();
         }

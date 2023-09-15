@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Paket;
-use App\Http\Requests\StorePaketRequest;
-use App\Http\Requests\UpdatePaketRequest;
 use App\Models\Outlet;
 use Illuminate\Http\Request;
+use App\Http\Requests\StorePaketRequest;
+use RealRashid\SweetAlert\Facades\Alert;
+use App\Http\Requests\UpdatePaketRequest;
+
 
 class PaketController extends Controller
 {
@@ -55,6 +57,7 @@ class PaketController extends Controller
             'harga' => $data['harga'],
         ]);
 
+        Alert::success('Success', 'Data Berhasil Ditambah');
         return redirect('laundry/paket');
     }
 
@@ -64,6 +67,7 @@ class PaketController extends Controller
     public function show($idpaket)
     {
         Paket::where('idpaket','=',$idpaket)->delete();
+
 
         return redirect('laundry/paket');
     }
@@ -96,6 +100,7 @@ class PaketController extends Controller
             'namapaket' => $data['jenis'],
             'harga' => $data['harga'],
         ]);
+
 
         return redirect('laundry/paket');
     }

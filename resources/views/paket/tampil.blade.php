@@ -10,7 +10,7 @@
     <div class="card-body">
         <div class="table-responsive">
             <a href="{{ url('laundry/paket/tambah') }}" class="btn btn-primary mb-4" >Tambah Paket</a>
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>No</th>

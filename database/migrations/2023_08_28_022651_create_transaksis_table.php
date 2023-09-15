@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id('idtransaksi');
             $table->integer('idoutlet');
             $table->integer('idmember');
-            $table->date('tanggal')->nullable();
+            $table->datetime('tanggal')->nullable();
+            $table->integer('biayatambahan')->nullable();
             $table->double('diskon')->nullable();
+            $table->integer('pajak')->nullable();
             $table->enum('status',['baru','proses','selesai','diambil'])->nullable();
             $table->enum('pembayaran',['sudahdibayar','belumdibayar'])->nullable();
             $table->integer('iduser');

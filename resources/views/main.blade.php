@@ -15,6 +15,7 @@
   <!-- Custom styles for this template-->
   <link href="{{ asset('sbadmin/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
+
   
 </head>
 <body id="page-top">
@@ -49,5 +50,7 @@
 
   <!-- Custom scripts for all pages-->
   <script src="{{ asset('sbadmin/js/sb-admin-2.min.js') }}"></script>
+  @include('sweetalert::alert')
+
 </body>
 </html>

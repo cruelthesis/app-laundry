@@ -14,7 +14,9 @@ class Transaksi extends Model
         'idoutlet',
         'idmember',
         'tanggal',
+        'biayatambahan',
         'diskon',
+        'pajak',
         'status',
         'pembayaran',
         'iduser'

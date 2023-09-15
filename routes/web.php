@@ -70,6 +70,10 @@ Route::group(['prefix' => 'laundry', 'middleware' => ['auth']], function(){
 
         //transaksi
         Route::get('transaksi', [TransaksiController::class,'index']);
+        Route::get('belipaket', [TransaksiController::class,'belipaket']);
+        Route::get('tambah/{id}', [TransaksiController::class, 'tambah']);
+        Route::get('kurang/{id}', [TransaksiController::class,'kurang']);
+        Route::get('transaksi/hapus/{id}', [TransaksiController::class,'hapus']);
 
         //laporan
 
