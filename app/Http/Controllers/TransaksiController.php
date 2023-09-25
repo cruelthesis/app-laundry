@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Transaksi;
 use App\Http\Requests\StoreTransaksiRequest;
 use App\Http\Requests\UpdateTransaksiRequest;
+use App\Models\DetailTransaksi;
 use App\Models\Member;
 use App\Models\Paket;
 use Illuminate\Http\Request;
@@ -21,7 +22,7 @@ class TransaksiController extends Controller
 
         $members = Member::all();
 
-        $pakets = Paket::all();
+        $pakets = Paket::where('idoutlet',$users->idoutlet)->get();
 
         return view ('Transaksi.tampil', ['user' => $users, 'member'=>$members, 'paket' => $pakets]);
     }
@@ -39,28 +40,129 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
+
         $users = Auth::user();
+        $kode_invoice = date('YmdHis');
+        $pembayaran = $request->pembayaran;
+        $status = "baru";
+        $tanggal = now();
+        $bataswaktu = date('Y-m-d', strtotime('+3 days', strtotime($tanggal)));
+        $total = $request->total;
+        $diskon = $request->diskon;
+        $tambahan = $request->biayatambahan;
+        $subtotal = 0;
 
-        $number = 0;
-
-        foreach (session('cart') as $key => $value ){
-            if ($users->role == 'admin'){
-                $data = [
-                    'idoutlet' => $value['idoutlet'],
-                    'idmember' => $request->idmember,
-                    'iduser' => $users->id,
-                    'tanggal' => now(),
-                    'diskon' => $request->diskon,
-                    'status' => $request->status,
-                    'pembayaran' => $request->pembayaran,
-                ];
-            }
-
-            $transaksis = Transaksi::create($data);
-
-
-            
+        foreach(session('cart') as $cart){
+            $subtotal += $cart['jumlah']*$cart['harga'];
         }
+
+        $pajak = 0.11*$subtotal;
+        
+        if ($pembayaran > $total){
+            $data = [
+                'idoutlet' => $users->idoutlet,
+                'idmember' => $request->idmember,
+                'iduser' => $users->id,
+                'tanggal' => $tanggal,
+                'kode_invoice' => $kode_invoice,
+                'bataswaktu' => $bataswaktu,
+                'diskon'=> $diskon,
+                'pajak' => $pajak,
+                'biayatambahan' => $tambahan,
+                'status' => $status,
+                'tanggalbayar' => now(),
+                'pembayaran' => 'sudahdibayar'
+
+            ];
+        }else{
+            $data = [
+                'idoutlet' => $users->idoutlet,
+                'idmember' => $request->idmember,
+                'iduser' => $users->id,
+                'tanggal' => $tanggal,
+                'kode_invoice' => $kode_invoice,
+                'bataswaktu' => $bataswaktu,
+                'diskon'=> $diskon,
+                'pajak' => $pajak,
+                'biayatambahan' => $tambahan,
+                'status' => $status,
+                'pembayaran' => 'belumdibayar'
+
+            ];
+        }
+        Transaksi::create($data);
+        $idtransaksi = Transaksi::latest()->first()->idtransaksi;
+
+        
+        foreach(session('cart')as $cart){
+            $detailtransaksi = [
+                'idtransaksi' => $idtransaksi,
+                'idpaket' => $cart['idpaket'],
+                'qty' => $cart['jumlah'],
+                'keterangan' => ''
+
+            ];
+
+            // dd($detailtransaksi);
+
+            DetailTransaksi::create($detailtransaksi);
+        }
+
+        session()->forget('cart');
+        return back();
+
+
+        
+
+    
+        
+        // $users = Auth::user();
+        // $idoutlet = $users->idoutlet;
+        // $kode_invoice = date('YmdHis');
+        // $idmember = $request->idmember;
+        // $tanggal = now();
+        // $bataswaktu = date('Y-m-d', strtotime('+3 days', strtotime($tanggal)));
+        // $biayatambahan = $request->biayatambahan;
+        // $diskon = $request->diskon;
+        // $total = $request->total;
+        // $pembayaran = $request->pembayaran;
+        // $status = "baru";
+        // $subtotal = 0;
+
+        
+
+        // $pajak = 0.11*$subtotal;
+        // if ($pembayaran >= $total) {
+        //     $tanggalbayar = now();
+        //     $pembayaran = "sudahdibayar";
+        // }else{
+        //     $tanggalbayar = "";
+        //     $pembayaran = "belumdibayar";
+        // }
+
+        // $data = [
+        //     'idoutlet'=>$idoutlet,
+        //     'kode_invoice'=>$kode_invoice,
+        //     'idmember' => $idmember,
+        //     'tanggal'=>$tanggal,
+        //     'bataswaktu'=>$bataswaktu,
+        //     'tanggalbayar'=>$tanggalbayar,
+        //     'biayatambahan'=>$biayatambahan,
+        //     'diskon'=>$diskon,
+        //     'pajak'=>$pajak,
+        //     'status'=>$status,
+        //     'pembayaran'=>$pembayaran,
+        //     'iduser'=>$users->id
+        // ];
+
+        // Transaksi::create($data);
+        // $transaksi = Transaksi::latest()->first()->id;
+
+        // dd($data);
+
+        // return redirect('laundry/transaksi');
+
+
     }
 
     /**
@@ -150,5 +252,11 @@ class TransaksiController extends Controller
         }
 
         return back();
+    }
+
+    public function struk(Request $request){
+        $auth = Auth::User();
+
+        return view('Transaksi.struk2');
     }
 }

@@ -33,7 +33,7 @@
                         <td>{{ $member->alamat }}</td>
                         <td>{{ $member->jeniskelamin }}</td>
                         <td>{{ $member->telp }}</td>
-                        <td><a href="{{ url('laundry/member/edit/'.$member->idmember) }}" class="text-warning mx-4"><i class="fas fa-fw fa-edit"></i></a><a href="{{ url('laundry/member/hapus/'.$member->idmember) }}" class="text-danger"><i class="fas fa-fw fa-trash-alt"></a></td>
+                        <td><a href="{{ url('laundry/member/edit/'.$member->idmember) }}" class="text-warning mx-4"><i class="fas fa-fw fa-edit"></i></a><a href="{{ url('laundry/member/hapus/'.$member->idmember) }}" class="text-danger" onclick="return confirm('Yakin akan dihapus');"><i class="fas fa-fw fa-trash-alt"></a></td>
                     </tr>  
                     @endforeach
                     

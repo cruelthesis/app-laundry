@@ -33,7 +33,7 @@
                         <td>{{ $paket->jenis }}</td>
                         <td>{{ $paket->namaoutlet }}</td>
                         <td>{{ $paket->harga }}</td>
-                        <td><a href="{{ url('laundry/paket/edit/'.$paket->idpaket) }}" class="text-warning mx-4"><i class="fas fa-fw fa-edit"></i></a><a href="{{ url('laundry/paket/hapus/'.$paket->idpaket) }}" class="text-danger"><i class="fas fa-fw fa-trash-alt"></a></td>
+                        <td><a href="{{ url('laundry/paket/edit/'.$paket->idpaket) }}" class="text-warning mx-4"><i class="fas fa-fw fa-edit"></i></a><a href="{{ url('laundry/paket/hapus/'.$paket->idpaket) }}" class="text-danger" onclick="return confirm('Yakin akan dihapus');"><i class="fas fa-fw fa-trash-alt"></a></td>
                     </tr>  
                     @endforeach
                     

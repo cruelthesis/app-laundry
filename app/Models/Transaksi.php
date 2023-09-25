@@ -13,12 +13,15 @@ class Transaksi extends Model
         'idtransaksi',
         'idoutlet',
         'idmember',
+        'kode_invoice',
         'tanggal',
         'biayatambahan',
         'diskon',
         'pajak',
         'status',
         'pembayaran',
+        'tanggalbayar',
+        'bataswaktu',
         'iduser'
     ];
 }

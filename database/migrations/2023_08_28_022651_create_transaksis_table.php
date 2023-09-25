@@ -16,6 +16,8 @@ return new class extends Migration
             $table->integer('idoutlet');
             $table->integer('idmember');
             $table->datetime('tanggal')->nullable();
+            $table->date('bataswaktu')->nullable();
+            $table->integer('kode_invoice')->nullable();
             $table->integer('biayatambahan')->nullable();
             $table->double('diskon')->nullable();
             $table->integer('pajak')->nullable();

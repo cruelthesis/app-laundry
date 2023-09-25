@@ -30,7 +30,7 @@
                             <td>{{ $outlet->namaoutlet }}</td>
                             <td>{{ $outlet->alamat }}</td>
                             <td>{{ $outlet->telp }}</td>
-                            <td><a href="{{ url('laundry/outlet/edit/'.$outlet->idoutlet) }}" class="text-warning mx-4"><i class="fas fa-fw fa-edit"></i></a><a href="{{ url('laundry/outlet/hapus/'.$outlet->idoutlet) }}" class="text-danger"><i class="fas fa-fw fa-trash-alt"></a></td>
+                            <td><a href="{{ url('laundry/outlet/edit/'.$outlet->idoutlet) }}" class="text-warning mx-4"><i class="fas fa-fw fa-edit"></i></a><a href="{{ url('laundry/outlet/hapus/'.$outlet->idoutlet) }}" onclick="return confirm('Yakin akan dihapus');" class="text-danger"><i class="fas fa-fw fa-trash-alt"></a></td>
                         </tr>
                         
 

@@ -19,7 +19,7 @@
                     <button type="submit" class="btn btn-primary mt-2">Tambah</button>
                 </form>
                 <hr>
-                <form action="">
+                <form action="{{ url('laundry/transaksi/tambah') }}" method="post">
                     @csrf
                     <select name="idmember" class="form-control" id="">
                         <option value="">Pilih Pelanggan</option>
@@ -27,11 +27,11 @@
                             <option value="{{ $pelanggan->idmember }}">{{ $pelanggan->nama }}</option>
                         @endforeach
                     </select>
-                    <input type="number" name="biayatambahan" class="form-control mt-2" placeholder="Biaya Tambahan">
-                    <input type="number" name="diskon" class="form-control mt-2" placeholder="Diskon">
-                    <input type="number" name="total" class="form-control mt-2" disabled placeholder="Total">
-                    <input type="number" name="dibayar" class="form-control mt-2" placeholder="Uang Bayar">
-                    <input type="number"name="kembali" class="form-control mt-2" placeholder="Kembalian" value="0" disabled>
+                    <input type="number" id="tambahan" name="biayatambahan" class="form-control mt-2" placeholder="Biaya Tambahan">
+                    <input type="number" id="diskon" name="diskon" class="form-control mt-2" placeholder="Diskon">
+                    <input type="number" id="total" name="total" class="form-control mt-2" disabled placeholder="Total">
+                    <input type="number" id="pembayaran" name="pembayaran" class="form-control mt-2" placeholder="Uang Bayar">
+                    <input type="number" id="kembali" name="kembali" class="form-control mt-2" placeholder="Kembalian" value="0" disabled>
                     <button type="submit" class="btn btn-success mt-2">Simpan</button>
                 </form>
             </div>
@@ -65,7 +65,7 @@
                                 </td>
                                 <td>{{ $cart['harga'] }}</td>
                                 <td>{{ $cart['harga']*$cart['jumlah'] }}</td>
-                                <td><a href="{{ url('laundry/transaksi/hapus/'.$cart['idpaket']) }}" class="text-danger"><i class="fa fa-trash"></i></a></td>
+                                <td><a onclick="return confirm('Yakin akan dihapus');" href="{{ url('laundry/transaksi/hapus/'.$cart['idpaket']) }}" class="text-danger"><i class="fa fa-trash"></i></a></td>
                             </tr>
                             @php
                                 $total += $cart['harga']*$cart['jumlah'];
@@ -74,7 +74,7 @@
                     @endif
                     <tr>
                         <td colspan="4">Jumlah</td>
-                        <td colspan="2">{{ $total }}</td>
+                        <td colspan="2" id="subtotal">{{ $total }}</td>
                     </tr>
                 </table>
             </div>
@@ -84,6 +84,37 @@
 
 
 
+@endsection
+@section('script')
+    <script>
+        $(document).ready(function(){
+            var sub = $('#subtotal').text();
+            
+            $('#tambahan').keyup(function(){
+                var pajak = 11/100*parseInt(sub);
+                var tambahan = $('#tambahan').val();
+                var total = parseInt(sub) + parseInt(tambahan) + pajak;
+
+                $('#total').val(total);
+            });
+
+            
+            $('#diskon').keyup(function(){
+                var pajak = 11/100*parseInt(sub);
+                var diskon = $('#diskon').val();
+                var total = parseInt(sub) - parseInt(diskon) + pajak;
+
+                $('#total').val(total);
+            });
+            
+
+            $('#pembayaran').keyup(function(){
+                var total = $('#total').val();
+                var bayar = $('#pembayaran').val();
+                $('#kembali').val(parseInt(bayar)-parseInt(total));
+            });
+        });
+    </script>
 @endsection
 
     

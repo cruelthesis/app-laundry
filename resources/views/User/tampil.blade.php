@@ -33,7 +33,7 @@
                         <td>{{ $user->username }}</td>
                         <td>{{ $user->namaoutlet }}</td>
                         <td>{{ $user->role }}</td>
-                        <td><a href="{{ url('laundry/user/edit/'.$user->id) }}" class="text-warning mx-4"><i class="fas fa-fw fa-edit"></i></a><a href="{{ url('laundry/user/hapus/'.$user->id) }}" class="text-danger"><i class="fas fa-fw fa-trash-alt"></a></td>
+                        <td><a href="{{ url('laundry/user/edit/'.$user->id) }}" class="text-warning mx-4"><i class="fas fa-fw fa-edit"></i></a><a href="{{ url('laundry/user/hapus/'.$user->id) }}" onclick="return confirm('Yakin akan dihapus');" class="text-danger"><i class="fas fa-fw fa-trash-alt"></a></td>
                     </tr>  
                     @endforeach
                     

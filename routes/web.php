@@ -74,6 +74,8 @@ Route::group(['prefix' => 'laundry', 'middleware' => ['auth']], function(){
         Route::get('tambah/{id}', [TransaksiController::class, 'tambah']);
         Route::get('kurang/{id}', [TransaksiController::class,'kurang']);
         Route::get('transaksi/hapus/{id}', [TransaksiController::class,'hapus']);
+        Route::post('transaksi/tambah', [TransaksiController::class, 'store']);
+        Route::get('struk', [TransaksiController::class, 'struk']);
 
         //laporan
 
