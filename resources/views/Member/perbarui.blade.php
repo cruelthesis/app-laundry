@@ -23,7 +23,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="">Jenis Kelamin</label><br>
-                    <select class="form-select"  name="jeniskelamin" >
+                    <select class="form-select form-control"  name="jeniskelamin" >
                         <option value="{{ $member->jeniskelamin }}">{{ $member->jeniskelamin }}</option>
                         <option value="L">Laki-laki</option>
                         <option value="P">Perempuan</option>
@@ -34,7 +34,7 @@
                     <input type="text"  value="{{ $member->telp }}" class="form-control" id="exampleFormControlInput1" placeholder="" name="telp">
                 </div>
 
-                <button class="btn btn-primary mb-4">Tambah</button>
+                <button class="btn btn-primary mb-4">Simpan</button>
             </form>
             
         </div>

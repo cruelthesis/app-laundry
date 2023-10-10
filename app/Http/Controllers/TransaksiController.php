@@ -7,6 +7,7 @@ use App\Http\Requests\StoreTransaksiRequest;
 use App\Http\Requests\UpdateTransaksiRequest;
 use App\Models\DetailTransaksi;
 use App\Models\Member;
+use App\Models\Outlet;
 use App\Models\Paket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -52,12 +53,17 @@ class TransaksiController extends Controller
         $tambahan = $request->biayatambahan;
         $subtotal = 0;
 
+        $hasil = $total-$pembayaran;
+
+        // dd($hasil);
+
+
         foreach(session('cart') as $cart){
             $subtotal += $cart['jumlah']*$cart['harga'];
         }
 
         $pajak = 0.11*$subtotal;
-        
+
         if ($pembayaran > $total){
             $data = [
                 'idoutlet' => $users->idoutlet,
@@ -74,7 +80,7 @@ class TransaksiController extends Controller
                 'pembayaran' => 'sudahdibayar'
 
             ];
-        }else{
+        }else if($pembayaran < $total){
             $data = [
                 'idoutlet' => $users->idoutlet,
                 'idmember' => $request->idmember,
@@ -257,6 +263,54 @@ class TransaksiController extends Controller
     public function struk(Request $request){
         $auth = Auth::User();
 
-        return view('Transaksi.struk2');
+        $transaksi = Transaksi::latest()->first();
+        $alamat = Outlet::where('idoutlet', $auth->idoutlet)->first();
+        $pelanggan = Member::where('idmember', $transaksi->idmember)->first();
+
+        $struk = DetailTransaksi::join('transaksis', 'detail_transaksis.idtransaksi', '=', 'transaksis.idtransaksi')
+        ->join('pakets', 'detail_transaksis.idpaket', '=', 'pakets.idpaket')
+        ->where('transaksis.idtransaksi', $transaksi->idtransaksi)
+        ->select(['detail_transaksis.*','pakets.*','transaksis.*'])
+        ->get();
+
+        return view('Transaksi.struk3', ['transaksi'=>$transaksi, 'alamat'=>$alamat, 'pelanggan'=>$pelanggan, 'struk'=>$struk]);
+    }
+
+
+    public function riwayat(Request $request){
+
+        $user = Auth::user();
+        $transaksi = Transaksi::
+        join('members', 'transaksis.idmember', '=', 'members.idmember')
+        ->join('outlets', 'transaksis.idoutlet', '=', 'outlets.idoutlet')
+        ->select(['transaksis.*', 'members.*', 'outlets.*'])
+        ->where('transaksis.idoutlet', $user->idoutlet)
+        ->orderBy('status', 'ASC')
+        ->get();
+
+
+
+        return view ('Transaksi.riwayat', ['transaksi'=>$transaksi]);
+    }
+
+    public function bayar($idtransaksi){
+
+        $transaksi = Transaksi::join('members', 'transaksis.idmember', '=', 'members.idmember')
+        ->select(['transaksis.*', 'members.*'])
+        ->where('idtransaksi', $idtransaksi)->first();
+
+        $detail = DetailTransaksi::join('pakets', 'detail_transaksis.idpaket', '=', 'pakets.idpaket')
+        ->select(['pakets.*', 'detail_transaksis.*'])
+        ->where('idtransaksi', $transaksi->idtransaksi)->get();
+
+        return view('Transaksi.bayar', ['transaksi'=> $transaksi, 'detail'=>$detail]);
+    }
+
+    public function updatepembayaran(Request $request, $idtransaksi){
+        $pembayaran = ['pembayaran'=>'sudahdibayar'];
+
+        Transaksi::where('idtransaksi', $idtransaksi)->update($pembayaran);
+
+        return redirect('laundry/transaksi/riwayat');
     }
 }

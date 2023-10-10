@@ -43,12 +43,12 @@
                 </a>
             </li>
 
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link" href="{{ url('laundry/transaksi') }}">
                     <i class="fas fa-fw fa-receipt"></i>
                     <span>Transaksi</span>
                 </a>
-            </li>
+            </li> --}}
 
             <li class="nav-item">
                 <a class="nav-link" href="{{ url('laundry/user') }}">
@@ -62,14 +62,14 @@
 
             <li class="nav-item">
                 <a class="nav-link" href="{{ url('laundry/transaksi') }}">
-                    <i class="fas fa-fw fa-receipt"></i>
+                    <i class="fas fa-fw fa-cash-register"></i>
                     <span>Transaksi</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ url('') }}">
+                <a class="nav-link" href="{{ url('laundry/transaksi/riwayat') }}">
                     <i class="fas fa-fw fa-receipt"></i>
-                    <span>Detail Transaksi</span>
+                    <span>Daftar Transaksi & Order</span>
                 </a>
             </li>
                 

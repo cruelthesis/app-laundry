@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DetailTransaksiController;
 use App\Http\Controllers\FrontController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PaketController;
@@ -69,6 +70,22 @@ Route::group(['prefix' => 'laundry', 'middleware' => ['auth']], function(){
         
 
         //transaksi
+        // Route::get('transaksi', [TransaksiController::class,'index']);
+        // Route::get('belipaket', [TransaksiController::class,'belipaket']);
+        // Route::get('tambah/{id}', [TransaksiController::class, 'tambah']);
+        // Route::get('kurang/{id}', [TransaksiController::class,'kurang']);
+        // Route::get('transaksi/hapus/{id}', [TransaksiController::class,'hapus']);
+        // Route::post('transaksi/tambah', [TransaksiController::class, 'store']);
+        // Route::get('struk', [TransaksiController::class, 'struk']);
+
+        //laporan
+
+    });
+
+    Route::group(['middleware' => ['CekLogin:kasir']], function(){
+        
+
+        //transaksi
         Route::get('transaksi', [TransaksiController::class,'index']);
         Route::get('belipaket', [TransaksiController::class,'belipaket']);
         Route::get('tambah/{id}', [TransaksiController::class, 'tambah']);
@@ -76,6 +93,15 @@ Route::group(['prefix' => 'laundry', 'middleware' => ['auth']], function(){
         Route::get('transaksi/hapus/{id}', [TransaksiController::class,'hapus']);
         Route::post('transaksi/tambah', [TransaksiController::class, 'store']);
         Route::get('struk', [TransaksiController::class, 'struk']);
+
+        //riwayat dan detail transaksi
+        Route::get('transaksi/riwayat', [TransaksiController::class, 'riwayat']);
+        Route::get('detail/{id}', [DetailTransaksiController::class, 'index'] );
+        Route::post('status/{id}', [DetailTransaksiController::class, 'status'] );
+        Route::get('bayar/{id}', [TransaksiController::class, 'bayar']);
+        Route::post('updatebayar/{id}', [TransaksiController::class, 'updatepembayaran']);
+        Route::get('cetakstrukbaru/{id}', [DetailTransaksiController::class, 'show']);
+        Route::post('filter', [DetailTransaksiController::class, 'filter']);
 
         //laporan
 

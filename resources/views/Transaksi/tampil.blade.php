@@ -5,7 +5,7 @@
 
 <div class="row">
     <div class="col-4">
-        <div class="card">
+        <div class="card mb-4">
             <div class="card-body">
                 <form action="{{ url('laundry/belipaket') }}" method="">
                     @csrf
@@ -29,10 +29,10 @@
                     </select>
                     <input type="number" id="tambahan" name="biayatambahan" class="form-control mt-2" placeholder="Biaya Tambahan">
                     <input type="number" id="diskon" name="diskon" class="form-control mt-2" placeholder="Diskon">
-                    <input type="number" id="total" name="total" class="form-control mt-2" disabled placeholder="Total">
+                    <input type="number" id="total" name="total" class="form-control mt-2" readonly placeholder="Total">
                     <input type="number" id="pembayaran" name="pembayaran" class="form-control mt-2" placeholder="Uang Bayar">
                     <input type="number" id="kembali" name="kembali" class="form-control mt-2" placeholder="Kembalian" value="0" disabled>
-                    <button type="submit" class="btn btn-success mt-2">Simpan</button>
+                    <button type="submit" id="btntrans" class="btn btn-success mt-2">Simpan</button>
                 </form>
             </div>
         </div>
@@ -113,6 +113,15 @@
                 var bayar = $('#pembayaran').val();
                 $('#kembali').val(parseInt(bayar)-parseInt(total));
             });
+        });
+
+        var btntrans = document.getElementById('btntrans');
+
+        btntrans.addEventListener('click', function(){
+        var url = "{{ url('laundry/struk') }}";
+
+        // Membuka URL dalam tab baru
+        window.open(url, '_blank');
         });
     </script>
 @endsection

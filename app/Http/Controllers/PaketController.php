@@ -97,7 +97,7 @@ class PaketController extends Controller
 
         Paket::where('idpaket',$idpaket)->update([
             'jenis' => $data['jenis'],
-            'namapaket' => $data['jenis'],
+            'namapaket' => $data['namapaket'],
             'harga' => $data['harga'],
         ]);
 

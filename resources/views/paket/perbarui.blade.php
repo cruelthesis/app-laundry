@@ -15,7 +15,7 @@
 
                 <div class="mb-3">
                     <label for="">Outlet</label><br>
-                    <select class="form-select" name="idoutlet" >
+                    <select class="form-select form-control" name="idoutlet" >
                     @foreach ($outlet as $outlet)
                         <option @selected($outlet->idoutlet==$paket->idoutlet) value="{{ $outlet->idoutlet }}">{{ $outlet->namaoutlet }}</option>
                     @endforeach
@@ -24,7 +24,7 @@
 
                 <div class="mb-3">
                     <label for="">Jenis Barang</label><br>
-                    <select class="form-select"  name="jenis" >
+                    <select class="form-select form-control"  name="jenis" >
                         <option value="{{ $paket->jenis }}">{{ $paket->jenis }}</option>
                         <option value="kiloan">Kiloan</option>
                         <option value="selimut">Selimut</option>
